@@ -5,11 +5,9 @@ require("dotenv").config()
 // 注意：req.user 取得 Passport 套件 包裝後的資料。
 const passport = require("passport")
 const LocalStrategy = require("passport-local").Strategy
-
 // Hash 雜湊
 const bcrypt = require("bcryptjs")
-
-// Model
+// Models
 const db = require("../models")
 const { User, Product } = db
 
@@ -72,13 +70,13 @@ const passportJWT = require("passport-jwt")
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 
-// jwtOptions：根據 jwtOptions 內資訊，可成功解開 token，之後運用裡面資訊查找 user。
+// 1. jwtOptions：根據 jwtOptions 內資訊，可成功解開 token，之後運用裡面資訊查找 user。
 let jwtOptions = {}
 
-// jwtOptions.jwtFromRequest：設定尋找 token 的位置，指定 authorization "header" 內的 Bearer 項目。
+// 2. jwtOptions.jwtFromRequest：設定尋找 token 的位置，指定 authorization "header" 內的 Bearer 項目。
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 
-// jwtOptions.secretOrKey：使用"密鑰"檢查 token 是否經纂改，即放入 process.env.JWT_SECRET 的字串，此密鑰只有 Server 知道。
+// 3. jwtOptions.secretOrKey：使用"密鑰"檢查 token 是否經纂改，即放入 process.env.JWT_SECRET 的字串，此密鑰只有 Server 知道。
 jwtOptions.secretOrKey = process.env.JWT_SECRET
 
 let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
