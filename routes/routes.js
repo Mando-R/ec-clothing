@@ -60,6 +60,13 @@ router.post("/order", authenticated, orderController.postOrder)
 // (3) [Delete] Cancel orders
 router.post("/order/:id/cancel", authenticated, orderController.cancelOrder)
 
+// -------------------- Payment Gateway ---------------------
+// (1) [Read] Controller 傳送 交易參數 -> 藍新平台
+router.get("/order/:id/payment", orderController.getPayment)
+
+// (2) [Create/POST] 藍新平台 -> Controller 接收 付款完成資訊
+router.post("/newebpay/callback", orderController.newebpayCallback)
+
 // -------------------- Sign-in／Sign-up／Log-out ---------------------
 
 // Sign-up [User 註冊流程]
