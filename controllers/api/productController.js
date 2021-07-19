@@ -32,10 +32,10 @@ const productController = {
     Product.findAndCountAll({
       include: [{ model: Category }],
       // where(Category／categoryId)：where 篩選，須為物件{}。
-      where: whereQuery,
+      //where: whereQuery,
       // Pagination
-      offset: offset,
-      limit: amountPerPage
+      //offset: offset,
+      //limit: amountPerPage
     })
       // results = 篩選後的 products
       .then(results => {
@@ -67,15 +67,15 @@ const productController = {
           .then(categories => {
             return res.json({
               products: data,
-              categories: categories,
+              // categories: categories,
               // categoryId = Number(req.query.categoryId) 回傳 views
-              categoryId: categoryId,
+              // categoryId: categoryId,
 
               // Pagination
-              thePage: thePage,
-              totalPage: totalPage,
-              prevPage: prevPage,
-              nextPage: nextPage
+              // thePage: thePage,
+              // totalPage: totalPage,
+              // prevPage: prevPage,
+              // nextPage: nextPage
             })
           })
       })
