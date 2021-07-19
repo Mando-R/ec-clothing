@@ -10,6 +10,7 @@ const helpers = require("../_helpers")
 const productController = require("../controllers/productController.js")
 const cartController = require("../controllers/cartController.js")
 const userController = require("../controllers/userController.js")
+const orderController = require("../controllers/orderController.js")
 
 // -------------------- isAdmin 權限驗證(User Model) ---------------------
 // 1. isAdmin 前台：authenticated
@@ -50,6 +51,14 @@ router.post("/cartItem/:id/add", cartController.addCartItem)
 router.post('/cartItem/:id/sub', cartController.subCartItem)
 // [Delete] (3) Delete CartItems
 router.delete("/cartItem/:id", cartController.deleteCartItem)
+
+// -------------------- Orders ---------------------
+// (1) [Read] Orders page
+router.get("/orders", authenticated, orderController.getOrders)
+// (2) [Create/POST] Shopping carts -> Orders
+router.post("/order", authenticated, orderController.postOrder)
+// (3) [Delete] Cancel orders
+router.post("/order/:id/cancel", authenticated, orderController.cancelOrder)
 
 // -------------------- Sign-in／Sign-up／Log-out ---------------------
 

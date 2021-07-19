@@ -1,0 +1,118 @@
+<head>
+  <link rel="stylesheet" href="/css/views_orders.css">
+</head>
+
+{{#each orders}}
+<div class="wrapper col-md-12">
+  <div class="container col-md-12">
+    <!-- Main -->
+    <div class="main col-md-10">
+      <table class="table">
+        <thead class="header">
+          <div class="header__title--summary">
+            <div class="header__title--amount">Order Total: NT$ {{this.amount}}</div>
+            <div class="header__title--items">Shopping Cart ({{this.orderFindProducts.length}} items)</div>
+          </div>
+
+          <tr class="header__title">
+            <th class="header__title--productInfo" scope="col">Product Information</th>
+            <th class="text-center" scope="col">Unit Price</th>
+            <th class="text-center" scope="col">QTY</th>
+          </tr>
+        </thead>
+
+        <tbody class="body">
+
+          {{#each this.orderFindProducts}}
+          <tr class="body__text">
+            <!-- Name -->
+            <td>{{this.name}}</td>
+
+            <!-- Price -->
+            <td class="text-center">NT$ {{this.price}}</td>
+
+            <!-- QTY -->
+            <td class="text-center">{{this.OrderItem.quantity}}</td>
+
+          </tr>
+          {{/each}}
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar col-md-10">
+      <!-- Sidebar Left -->
+      <div class="sidebar__left col-md-6">
+        <!-- Customer Info -->
+        <div class="sidebar__customerInfo">
+          <div class="sidebar__left--title">Customer Info</div>
+          <div class="sidebar__left--item">Order Id: {{this.id}}</div>
+          <div class="sidebar__left--item">Full Name: {{this.name}}</div>
+          <div class="sidebar__left--item">Contact Number: {{this.phone}}</div>
+        </div>
+
+        <!-- Delivery Detail -->
+        <div class="sidebar__deliveryDetail">
+          <div class="sidebar__left--title">Delivery Detail</div>
+          <div class="sidebar__left--item">Shipping Destination: Taiwan</div>
+          <div class="sidebar__left--item">Address: {{this.address}}</div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="sidebar__shipping">
+          <div class="sidebar__left--title">Shipping</div>
+          <div class="sidebar__left--item">Shipping Status: {{this.shipping_status}}</div>
+        </div>
+      </div>
+
+      <!-- Sidebar Right -->
+      <div class="sidebar__right col-md-5">
+        <!-- Payment -->
+        <div class="sidebar__payment">
+          <div class="sidebar__right--title">Payment</div>
+
+          <div class="sidebar__right--item">Payment Method:
+            <img class="customerInfo__payment--image" src="https://www.newebpay.com/ud/img/logo_sm2.png"
+              alt="Card image cap">
+          </div>
+
+          <!-- handlebars-helpers：switch 切換 3 情況 0, 1, -1 -->
+          <div class="sidebar__right--item {{colorPayStatus this.payment_status }}">
+            Payment Status: {{getPayStatus this.payment_status}}</div>
+
+        </div>
+
+        <div>
+          <!-- Sidebar-Button -->
+          <div class="sidebar__button" style="display: flex; justify-content: space-around;min-width: 300px;">
+            <!-- Cancel -->
+            <div class="sidebar__button--cancel">
+              <form action="/order/{{this.id}}/cancel" method="POST">
+                <button type="submit" class="btn btn-danger">Cancel</button>
+              </form>
+            </div>
+
+            <!-- Place Order -->
+            <div class="sidebar__button--placeOrder">
+              <a href="/order/{{this.id}}/payment">
+                <button class="btn btn-success">Place Order</button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+</div>
+
+<hr />
+{{/each}}
