@@ -11,6 +11,7 @@ const session = require("express-session")
 const flash = require("connect-flash")
 const cookieParser = require("cookie-parser")
 
+
 // 引入 .env 檔案：若現在環境 process.env.NODE_ENV 非 "production"，則使用 dotenv 資訊。注意：順序在 Passport 之前。
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
@@ -20,7 +21,7 @@ if (process.env.NODE_ENV !== "production") {
 app.engine("hbs", handlebars({
   extname: ".hbs",
   defaultLayout: "main.hbs",
-  // helpers: require("./config/handlebars-helpers.js")
+  helpers: require("./config/handlebars-helpers.js")
 }))
 app.set("view engine", "hbs")
 
@@ -57,8 +58,8 @@ app.use((req, res, next) => {
   // req.flash 放入 res.locals 內
   res.locals.success_messages = req.flash("success_messages")
   res.locals.error_messages = req.flash("error_messages")
-  // res.locals.user = req.user
-  // res.locals.user = helpers.getUser(req)  // 取代 req.user
+  res.locals.user = req.user
+  //res.locals.user = helpers.getUser(req)  // 取代 req.user
   next()
 })
 
@@ -73,5 +74,5 @@ app.listen(port, () => {
 // 注意：require('./routes')(app) 須放在 app.js 最後一行，因按照由上而下順序，當 app.js 把 app(即 express()) 傳入 Route 時，程式中間(routes/index.js)做的 Handlebars 設定、Server 設定，也一併透過 app 變數傳入。
 // 引入 routes 並傳入 app，讓 routes 可用 app 物件指定路由。
 // require("./routes")(app, passport) // 把 passport 傳入 routes
-// require("./routes")(app)
+require("./routes")(app)
 module.exports = app

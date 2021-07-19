@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- 兼容 IE版本 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- 整體佈局 -->
+  <link rel="stylesheet" media="all"
+    href="https://cdn.shoplineapp.com/assets/common-f47625baea59b7f28766c213f44af5679a3f7198f77cf8bb89041274db97940a.css">
+
+  <!-- 最上方 navbar：Home, Cart 等 -->
+  <link rel="stylesheet" media="all"
+    href="https://cdn.shoplineapp.com/assets/application-806a9a60aff1fccd9921cbf4430e51167960be33feb8015bd4b9389801f30529.css">
+
+  <style>
+    :root {}
+  </style>
+
+  <!-- 引入CSS：GLOBAL CONTENT FOR HTML HEAD START-->
+  <link rel="stylesheet" media="screen"
+    href="https://cdn.shoplineapp.com/assets/themes/rebel.black-9ce4b940a1a375a6e5cd6cda5790dcd25537f643e11807ebd93c658ece0549d5.css">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/b677c2f0a5.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="" ng-controller="MainController">
+
+  <div id="left-panel" style="display:none" class="panel-mobile sidr left">
+    <div class="side-panel-search hidden-xs">
+      <form ng-controller="ProductsSearchController" ng-submit="search(searchQuery, $event)" action="/products"
+        class="ng-pristine ng-valid ng-scope ng-valid-maxlength">
+        <button><span class="fa fa-search"></span></button>
+        <input name="query" ng-model="searchQuery" placeholder="Search Products" maxlength="100"
+          class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+        <span class="fa fa-times" ng-click="clearSearch()"></span>
+      </form>
+    </div>
+
+    <div class="visible-xs">
+      <div class="section-header">
+        Navigation
+      </div>
+    </div>
+  </div>
+
+  <!--left-panel-->
+  <div class="side-panel-search search-panel-mobile">
+    <form ng-controller="ProductsSearchController" ng-submit="search(searchQuery, $event); $event.preventDefault();"
+      action="#/search/" class="ng-pristine ng-valid ng-scope">
+      <button class="mobile-search-btn"><span class="fa fa-search"></span></button>
+      <input type="search" name="searchQuery" ng-model="searchQuery" placeholder="Search Products"
+        class="ng-pristine ng-untouched ng-valid ng-empty">
+      <span class="fa fa-times ng-hide" ng-class="{ 'has-search-query': searchQuery }" ng-show="searchQuery.length > 0"
+        ng-click="clearSearch()"></span>
+    </form>
+    <div class="search-mask"></div>
+  </div>
+
+  <div id="fixed-menu-container" class="mobile-revamp-navigation ">
+    <div class="fixed-menu-wrapper">
+
+      <a class="visible-xs m-search-button menu-button  ">
+        <span class="fa fa-search"></span>
+      </a>
+
+      <!-- mobile logo -->
+      <div class="mobile-logo">
+        <a href="https://www.chiaselect.com/" class="sl-lazy-image"
+          style="background-image:url(https://shoplineimg.com/5b4461529a76f081a2000629/5b7d37e6376ed50014514b38/x200.webp?source_format=png)"
+          data-size="x200"></a>
+      </div>
+
+      <!-- Homepage -->
+      <a class="menu-button member-myaccount-button ng-scope" href="/">
+        <span class="fas fa-home"></span>
+        <span class="menu-words" style="padding-left:6px;">
+          Home
+        </span>
+      </a>
+
+      <!-- Shopping Cart -->
+      <a class="menu-button member-myaccount-button ng-scope" href="/cart">
+        <span class="fas fa-shopping-cart"></span>
+        <span class="menu-words" style="padding-left:6px;">
+          Cart
+        </span>
+
+        {{#if itemAmount}}
+        <span>
+          ({{itemAmount}})
+        </span>
+
+        {{else}}
+        <span>
+          (0)
+        </span>
+        {{/if}}
+      </a>
+
+      <!-- Order -->
+      <a class="menu-button member-myaccount-button ng-scope" href="/orders">
+        <span class="far fa-clipboard-check"></span>
+        <span class="menu-words" style="padding-left:6px;">
+          Order
+        </span>
+      </a>
+
+      <!-- Admin -->
+      <a class="menu-button member-myaccount-button ng-scope" ng-if="isUserLoggedIn" href="/admin">
+        <span class="fas fa-user-cog"></span>
+        <span class="menu-words" style="padding-left:6px;">
+          Admin
+        </span>
+      </a>
+
+      <!-- Log-out -->
+      <a class="menu-button member-myaccount-button ng-scope" href="/logout">
+        <span class="fas fa-sign-out-alt"></span>
+        <span class="menu-words" style="padding-left:6px;">
+          Log out
+        </span>
+      </a>
+
+      <!-- search bar -->
+      <div class="menu-button search-button ">
+        <!-- action 路由：/search -->
+        <form ng-controller="ProductsSearchController" ng-submit="search(searchQuery, $event)" action="/search"
+          style="margin-bottom: 0" class="ng-pristine ng-valid ng-scope ng-valid-maxlength">
+
+          <!-- 新增 type="text"、name="keyword"、value="{{keyword}}" -->
+          <!-- 其中 value="{{keyword}}"：將keyword"req.query.keyword" 代回search bar欄位，保留當下搜尋紀錄 -->
+          <input type="text" name="keyword" value="{{keyword}}" ng-model="searchQuery" placeholder="Search Products"
+            maxlength="100" class="ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength">
+          <button>
+            <span class="fa fa-search"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-wrapper">
+    <div class="body-content mobile-revamp-navigation">
+
+      <!-- main Content -->
+      <div class="yield-wrapper">
+        <!-- RWD佈局： -->
+        <div class="container global-primary d-flex justify-content-around ">
+          <div class="container-md-height" style="height: 100%; table-layout: fixed; width: 100%; margin-bottom: 2%; ">
+            <!-- height and width must be difined for td to size correctly -->
+            <div class="" style="height: 100%;">
+              <!-- Rendering page grid items -->
+              <div class="item grid-image-item
+              col-xs-12
+              col-md-12
+              col-md-12
+              " style="vertical-align: top; height: 100%;">
+                <div style="height: 100%;">
+                  <div class="d-flex justify-content-center" style="">
+                    <!-- Flash  Message -->
+                    {{#if success_messages}}
+                    <div class="alert alert-success text-center" role="alert" style="margin: 10px 0px ;">
+                      {{success_messages}}
+                    </div>
+                    {{/if}}
+
+                    {{#if error_messages}}
+                    <div class="alert alert-danger text-center" role="alert" style="margin: 10px 0px ;">
+                      {{error_messages}}
+                    </div>
+                    {{/if}}
+
+                    {{{body}}}
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
