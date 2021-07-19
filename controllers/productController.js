@@ -7,7 +7,7 @@ const { Product, Category } = db
 const amountPerPage = 20
 
 const productController = {
-  // [Read] products
+  // [Read] Products listing pages
   getProducts: (req, res) => {
     // Pagination
     // offset：每次開始計算新一頁時，偏移(換頁)的數量
@@ -80,6 +80,21 @@ const productController = {
               nextPage: nextPage
             })
           })
+      })
+  },
+
+  // [Read] Single product details
+  getProduct: (req, res) => {
+    return Product.findByPk(req.params.id, {
+      include: [
+        { model: Category },
+      ]
+    })
+      .then(product => {
+
+        return res.render("product.hbs", {
+          product: product.toJSON(),
+        })
       })
   },
 }

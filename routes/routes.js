@@ -7,13 +7,15 @@ const productController = require("../controllers/productController.js")
 
 // -------------------- 前台 ---------------------
 
-// 1. Homepage 前台：restController ＋ authenticated
+// Homepage
 router.get("/", (req, res) => {
   res.redirect("/products")
 })
 
-// [Read]瀏覽 全部 商品
+// [Read] Products listing pages
 router.get("/products", productController.getProducts)
-// router.get("/products", productController.getProducts)
+
+// [Read] Single product details
+router.get("/products/:id", productController.getProduct)
 
 module.exports = router

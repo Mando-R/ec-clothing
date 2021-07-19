@@ -1,0 +1,80 @@
+<head>
+  <link rel="stylesheet" href="/css/views_product.css">
+</head>
+
+<div class="wrapper col-md-12">
+  <div class="">
+    <main class="main">
+
+      <!-- Image -->
+      <div class="main__image">
+        <img class="main__image img-responsive center-block" src="{{product.image}}" style="width: 350px;">
+      </div>
+
+      <!-- Productinfo -->
+      <div class="productinfo">
+        <!-- 1. Name -->
+        <div class="productinfo__name">
+          {{product.name}}
+        </div>
+
+        <!-- 2. Category -->
+        <div class="productinfo__category">
+          {{product.Category.name}}
+        </div>
+
+        <!-- 3. Price -->
+        <div class="productinfo__price">
+          NT$ {{product.price}}
+        </div>
+
+        <!-- 4. 庫存 Stock "QTY" -->
+        <div class="productinfo__stock">
+          Stock: {{product.quantity}}
+        </div>
+
+        <!-- 5. Wishlist -->
+        <div class="productinfo__wishlist">
+          <!-- isLiked（1）：移除 Like -->
+          <!-- this.id = productId -->
+          {{#if isLiked}}
+          <form action="/like/{{product.id}}?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">
+              <i class="fas fa-heart"></i>
+              Remove from Wishlist
+            </button>
+          </form>
+
+          {{else}}
+          <!-- isLiked（2）：加到 Like -->
+          <!-- this.id = productId -->
+          <form action="/like/{{product.id}}" method="POST">
+            <button type="submit" class="btn btn-danger">
+              <i class="far fa-heart"></i>
+              Add to Wishlist
+            </button>
+          </form>
+          {{/if}}
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Description -->
+    <div class="description">
+      <div class="description--title">
+        <hr>
+        DESCRIPTION
+      </div>
+
+      <p class="description--content">{{product.description}}</p>
+
+      <div class="description--back">
+        <a href="/products">Back</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
