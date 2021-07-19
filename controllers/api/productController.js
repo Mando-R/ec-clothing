@@ -80,6 +80,21 @@ const productController = {
           })
       })
   },
+
+  // [Read] Single product details
+  getProduct: (req, res) => {
+    return Product.findByPk(req.params.id, {
+      include: [
+        { model: Category },
+      ]
+    })
+      .then(product => {
+
+        return res.json({
+          product: product.toJSON(),
+        })
+      })
+  },
 }
 
 module.exports = productController
