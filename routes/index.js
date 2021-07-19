@@ -9,5 +9,5 @@ const apis = require("./apis")
 module.exports = (app) => {
   // 透過 app.use，將 "/"(首頁 URL)，連至檔案 routes/routes.js [承上 const routes = require("./routes")]
   app.use("/", routes)
-  //app.use("/api", apis)
+  app.use("/api", apis)
 }
