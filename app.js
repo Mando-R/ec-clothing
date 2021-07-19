@@ -3,19 +3,24 @@ const handlebars = require("express-handlebars")
 // const db = require("./models")
 const bodyParser = require("body-parser")
 const methodOverride = require("method-override")
+// helper 函式取代 passport 方法
+const helpers = require("./_helpers")
 // express & port
 const app = express()
 const port = process.env.PORT || 3000
-// cookie & session
-const session = require("express-session")
-const flash = require("connect-flash")
-const cookieParser = require("cookie-parser")
-
 
 // 引入 .env 檔案：若現在環境 process.env.NODE_ENV 非 "production"，則使用 dotenv 資訊。注意：順序在 Passport 之前。
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
+// 注意：避免先載入 passport，依順序卻尚未載入 dotenv。
+// 調整順序讓 passport.js 吃到環境參數.env 檔案，passport 必須放在 process.env.NODE_ENV 下方。
+// 也可在 passport.js 直接引入 require('dotenv').config()。
+const passport = require("./config/passport.js")
+// cookie & session
+const session = require("express-session")
+const flash = require("connect-flash")
+const cookieParser = require("cookie-parser")
 
 // Handlebars
 app.engine("hbs", handlebars({
@@ -47,6 +52,11 @@ app.use(session({
   resave: false
 }))
 
+// Passport 初始化
+app.use(passport.initialize())
+// Passport 啟動 session 功能，這組設定務必要放在 session() 之後
+app.use(passport.session())
+
 // (4) method-override
 app.use(methodOverride("_method"))
 
@@ -58,8 +68,10 @@ app.use((req, res, next) => {
   // req.flash 放入 res.locals 內
   res.locals.success_messages = req.flash("success_messages")
   res.locals.error_messages = req.flash("error_messages")
-  res.locals.user = req.user
-  //res.locals.user = helpers.getUser(req)  // 取代 req.user
+
+  // res.locals.user = req.user
+  res.locals.user = helpers.getUser(req)  // 取代 req.user
+
   next()
 })
 
