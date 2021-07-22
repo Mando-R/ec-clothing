@@ -44,7 +44,7 @@
 17. [sequelize](https://www.npmjs.com/package/sequelize)
 18. [sequelize-cli](https://www.npmjs.com/package/sequelize-cli)
 
-### Deployment
+### Test Accounts
 + Customer / Visitor - Test Account
   - email: aaa@aaa.aaa
   - password: aaa
